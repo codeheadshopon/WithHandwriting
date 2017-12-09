@@ -328,7 +328,7 @@ def paint_text(text, w, h,  rotate=False, ud=True, multi_fonts=False):
     a=np.asarray(vis2)
     a = a[:, :, 0]  # grab single channel
 
-    imsave('dataset/file_'+str(random.randint(0,1999))+'.png',a)
+    # imsave('dataset/file_'+str(random.randint(0,1999))+'.png',a)
 
     # a = speckle(a)
 
