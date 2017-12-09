@@ -254,7 +254,7 @@ def paint_text(text, w, h,  rotate=False, ud=True, multi_fonts=False):
                 if (fontsize == 0):
                     Flag = -1
                     break
-                print(fontsize)
+                # print(fontsize)
                 context.set_font_size(fontsize)
                 box = context.text_extents(text)
             if Flag == -1:
