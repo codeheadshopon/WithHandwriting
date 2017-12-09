@@ -1,37 +1,5 @@
 # -*- coding: utf-8 -*-
-'''This example uses a convolutional stack followed by a recurrent stack
-and a CTC logloss function to perform optical character recognition
-of generated text images. I have no evidence of whether it actually
-learns general shapes of text, or just is able to recognize all
-the different fonts thrown at it...the purpose is more to demonstrate CTC
-inside of Keras.  Note that the font list may need to be updated
-for the particular OS in use.
 
-This starts off with 4 letter words.  For the first 12 epochs, the
-difficulty is gradually increased using the TextImageGenerator class
-which is both a generator class for test/train data and a Keras
-callback class. After 20 epochs, longer sequences are thrown at it
-by recompiling the model to handle a wider image and rebuilding
-the word list to include two words separated by a space.
-
-The table below shows normalized edit distance values. Theano uses
-a slightly different CTC implementation, hence the different results.
-
-            Norm. ED
-Epoch |   TF   |   TH
-------------------------
-    10   0.027   0.064
-    15   0.038   0.035
-    20   0.043   0.045
-    25   0.014   0.019
-
-This requires cairo and editdistance packages:
-pip install cairocffi
-pip install editdistance
-
-Created by Mike Henry
-https://github.com/mbhenry/
-'''
 import os
 import itertools
 import codecs
@@ -238,8 +206,8 @@ def paint_text(text, w, h,  rotate=False, ud=True, multi_fonts=False):
                 itsoke = 0
 
     # text="অ"
-    w=random.randint(564,1900)
-    h=random.randint(64,200)
+    w=random.randint(300,1900)
+    h=random.randint(40,200)
     LargeWidth=0
 
     if(w>1000):
@@ -250,7 +218,7 @@ def paint_text(text, w, h,  rotate=False, ud=True, multi_fonts=False):
     fontsize = random.randint(30, 40)
 
     if(LargeWidth==1):
-        fontsize = random.randint(45,55)
+        fontsize = random.randint(40,55)
 
     surface = cairo.ImageSurface(cairo.FORMAT_RGB24, w, h)
     import random
@@ -280,26 +248,41 @@ def paint_text(text, w, h,  rotate=False, ud=True, multi_fonts=False):
         border_w_h = (4, 4)
         if box[2] > (w - 2 * border_w_h[1]) or box[3] > (h - 2 * border_w_h[0]):
 
+            Flag = 0
             while box[2] > (w - 2 * border_w_h[1]) or box[3] > (h - 2 * border_w_h[0]):
-                idx=len(text)-1
-                for i in range(len(text)-1,0,-1):
-                    # print(text[i])
-                    if text[i]==" ":
-                        idx=i
-                        break
-                text=text[0:idx]
+                fontsize -= 1
+                if (fontsize == 0):
+                    Flag = -1
+                    break
+                print(fontsize)
+                context.set_font_size(fontsize)
                 box = context.text_extents(text)
-            # print(text)
-            text1="মঠ"
-            text2="যোগ"
-            text3="যুগ"
-            Fl=random.randint(0,3)
-            if(Fl==0):
-                box = context.text_extents(text1)
-            elif(Fl==1):
-                box = context.text_extents(text2)
-            else:
-                box = context.text_extents(text3)
+            if Flag == -1:
+                fontsize = 20
+                text = "ক"
+                context.set_font_size(fontsize)
+                box = context.text_extents(text)
+
+            # while box[2] > (w - 2 * border_w_h[1]) or box[3] > (h - 2 * border_w_h[0]):
+            #     idx=len(text)-1
+            #     for i in range(len(text)-1,0,-1):
+            #         # print(text[i])
+            #         if text[i]==" ":
+            #             idx=i
+            #             break
+            #     text=text[0:idx]
+            #     box = context.text_extents(text)
+            # # print(text)
+            # text1="মঠ"
+            # text2="যগ"
+            # text3="যগ"
+            # Fl=random.randint(0,3)
+            # if(Fl==0):
+            #     box = context.text_extents(text1)
+            # elif(Fl==1):
+            #     box = context.text_extents(text2)
+            # else:
+            #     box = context.text_extents(text3)
 
 
             # raise IOError('Could not fit string into image. Max char count is too large for given image width.')
@@ -345,7 +328,7 @@ def paint_text(text, w, h,  rotate=False, ud=True, multi_fonts=False):
     a=np.asarray(vis2)
     a = a[:, :, 0]  # grab single channel
 
-    # imsave('dataset/file_'+str(random.randint(0,1999))+'.png',a)
+    imsave('dataset/file_'+str(random.randint(0,1999))+'.png',a)
 
     # a = speckle(a)
 
