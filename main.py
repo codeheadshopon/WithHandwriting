@@ -290,8 +290,17 @@ def paint_text(text, w, h,  rotate=False, ud=True, multi_fonts=False):
                 text=text[0:idx]
                 box = context.text_extents(text)
             # print(text)
-            text=["মঠ","যোগ","যুগ","সব","ছাই"]
-            box = context.text_extents(text[random.randint(0,4)])
+            text1="মঠ"
+            text2="যোগ"
+            text3="যুগ"
+            Fl=random.randint(0,3)
+            if(Fl==0):
+                box = context.text_extents(text1)
+            elif(Fl==1):
+                box = context.text_extents(text2)
+            else:
+                box = context.text_extents(text3)
+
 
             # raise IOError('Could not fit string into image. Max char count is too large for given image width.')
 
@@ -336,7 +345,7 @@ def paint_text(text, w, h,  rotate=False, ud=True, multi_fonts=False):
     a=np.asarray(vis2)
     a = a[:, :, 0]  # grab single channel
 
-    # imsave('dataset/file_'+str(random.randint(0,1999))+'.png',a)
+    imsave('dataset/file_'+str(random.randint(0,1999))+'.png',a)
 
     # a = speckle(a)
 
